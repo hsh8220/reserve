@@ -4,11 +4,12 @@
       <v-flex xs12 sm6 offset-sm3>
         <div>
           <datepicker class="my-datepicker" calendar-class="my-datepicker_class" :inline="true"
-                      :language="ko" :value="date" @selected="selectedDate"
-                      @opened="openCalendar"></datepicker>
+                      :language="ko" v-model="date" @selected="selectedDate"
+          ></datepicker>
         </div>
         <span id="test"></span>
         <v-divider style="margin-bottom: 20px; margin-top: 20px"></v-divider>
+
         <v-card>
           <v-list>
             <v-list-tile
@@ -33,8 +34,6 @@
   import Datepicker from 'vuejs-datepicker'
   import {en, ko} from 'vuejs-datepicker/dist/locale'
 
-  const date = new Date()
-
   export default {
     name: "State",
     components: {Datepicker},
@@ -42,24 +41,35 @@
       return {
         en: en,
         ko: ko,
-        states: []
+        states: [],
+        date: new Date()
       }
     },
     created: function () {
       let today = this.$moment(new Date()).format('YYYY-MM-DD')
-      this.$http.get('/api/state/' + this.$route.params.id + '/' + '2018-11-19')
+      this.$http.get('/api/state/' + this.$route.params.id + '/' + today)
         .then(data => {
           if (data.data) {
             this.states = data.data
           } else {
             alert("사용 기간이 만료되었습니다. 다시 로그인해 주세요.")
-            this.$router.push('login')
+            this.$router.push('/login')
           }
         })
     },
     methods: {
-      selectedDate: function () {
+      selectedDate: function (val) {
+        let date = this.$moment(val).format('YYYY-MM-DD')
 
+        this.$http.get('/api/state/' + this.$route.params.id + '/' + date)
+          .then(data => {
+            if (data.data) {
+              this.states = data.data
+            } else {
+              alert("사용 기간이 만료되었습니다. 다시 로그인해 주세요.")
+              this.$router.push('/login')
+            }
+          })
       }
     }
   }

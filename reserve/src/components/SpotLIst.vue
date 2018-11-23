@@ -32,7 +32,7 @@
             this.spots = data.data
           } else {
             alert("사용 기간이 만료되었습니다. 다시 로그인해 주세요.")
-            this.$router.push('login')
+            this.$router.push('/login')
           }
         })
     },
