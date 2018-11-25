@@ -148,7 +148,7 @@ public class RepositoryServiceImpl implements RepositoryService {
     }
 
     @Override
-    public void removeState(ReserveState state) {
-        reserveStateRepository.delete(state);
+    public void removeState(Integer id) {
+        reserveStateRepository.deleteById(id);
     }
 }

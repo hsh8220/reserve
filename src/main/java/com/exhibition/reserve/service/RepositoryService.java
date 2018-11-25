@@ -35,5 +35,5 @@ public interface RepositoryService {
     Optional<List<ReserveState>> getStateByExhibitionName(String exhibitionName, Timestamp date);
     void addState(ReserveState state);
     void modifyState(ReserveState state);
-    void removeState(ReserveState state);
+    void removeState(Integer id);
 }

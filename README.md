@@ -1,6 +1,6 @@
-# frontend
+# 전시대 신청 어플리케이션
 
-> A Vue.js project
+> Spring boot, Spring JPA, Vue js, vuex, vue router
 
 ## Build Setup
 
@@ -8,7 +8,7 @@
 # install dependencies
 npm install
 
-# serve with hot reload at localhost:8080
+# serve with hot reload at localhost:8081
 npm run dev
 
 # build for production with minification

@@ -12,5 +12,5 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
     List<Member> findByName(String name);
     Member findByUserId(String userId);
     @Transactional
-    Integer deleteByUserId(String userId);
+    void deleteByUserId(String userId);
 }

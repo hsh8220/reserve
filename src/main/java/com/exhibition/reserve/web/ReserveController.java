@@ -154,4 +154,27 @@ public class ReserveController {
             return null;
         }
     }
+
+    @RequestMapping(value = "/api/state/{id}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public Map<String, Object> deleteReserveStates(
+            @RequestHeader(value = "accessToken") String accessToken,
+            @PathVariable(value = "id") Integer id
+    ) {
+        Map<String, Object> result = new HashMap<>();
+        if (jwtService.checkJwt(accessToken)) {
+            try {
+                repositoryService.removeState(id);
+                result.put("result", "success");
+                return result;
+            } catch (Exception e) {
+                e.printStackTrace();
+                result.put("result", "error");
+                return result;
+            }
+        } else {
+            result.put("result", "error");
+            return null;
+        }
+    }
 }

@@ -30,7 +30,8 @@ export default new Vuex.Store({
           state.userId = member.member.userId,
           state.name = member.member.name,
           state.result = member.result,
-          sessionStorage.accessToken = member.accessToken
+          sessionStorage.accessToken = member.accessToken,
+          sessionStorage.userId = member.member.userId
       },
       LOGOUT(state) {
         state.accessToken = null,

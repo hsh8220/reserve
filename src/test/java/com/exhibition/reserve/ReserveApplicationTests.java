@@ -129,7 +129,7 @@ public class ReserveApplicationTests {
 		repositoryService.modifyState(status1);
 		assertThat(repositoryService.getStateByExhibitionName("신길역", date).map(List::size).orElse(0), is(3));
 
-		repositoryService.removeState(status3);
+		repositoryService.removeState(status1.getId());
 		assertThat(repositoryService.getStateByExhibitionName("신길역", date).map(List::size).orElse(0), is(2));
 	}
 
