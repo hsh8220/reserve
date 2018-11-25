@@ -42,7 +42,7 @@
     data() {
       return {
         states: [],
-        date: new Date().toISOString().substr(0, 10),
+        date: this.$moment(new Date()).format('YYYY-MM-DD'),
         userId: sessionStorage.userId,
         isBefore: false,
         isReserved: false
