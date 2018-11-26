@@ -1,30 +1,18 @@
 # 전시대 신청 어플리케이션
 
-> Spring boot, Spring JPA, Vue js, vuex, vue router
+> Spring boot, Spring JPA, Vue js, vuex, vue router, vue loader, webpack, mariaDB
 
 ## Build Setup
 
 ``` bash
-# install dependencies
+# reserve 폴더(vue js webpack 프로젝트 폴더) 외부 라이브러리 설치(/reserve/reserve)
 npm install
 
-# serve with hot reload at localhost:8081
+# dev 서버 동작 at localhost:8081 (spring boot는 8080포트로 설정되어있음, DB접근을 위해서 두 개의 서버를 돌려야함)
 npm run dev
 
-# build for production with minification
+# spring boot에 개발한 Vue js 컴포넌트를 번들링
 npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
-
-# run unit tests
-npm run unit
-
-# run e2e tests
-npm run e2e
-
-# run all tests
-npm test
 ```
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
