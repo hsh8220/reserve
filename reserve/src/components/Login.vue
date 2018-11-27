@@ -27,16 +27,22 @@
         </v-layout>
       </v-container>
     </v-content>
+    <Loader :dialog="progress"></Loader>
   </v-app>
 </template>
 
 <script>
+  import Loader from './Loader.vue'
+
   export default {
+    components: {Loader},
+    comments: {Loader},
     data() {
       return {
         userId: '',
         pw: '',
         msg: '',
+        progress: false
       }
     },
     name: 'Login',

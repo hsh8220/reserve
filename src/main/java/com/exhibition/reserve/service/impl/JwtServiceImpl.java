@@ -52,10 +52,6 @@ public class JwtServiceImpl implements JwtService {
         try {
             Claims claims = Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary(secretKey))
                     .parseClaimsJws(jwt).getBody();
-            logger.info("expireTime:"+claims.getExpiration());
-            logger.info("id:"+claims.get("id"));
-            logger.info("role:"+claims.get("role"));
-
             return true;
         } catch (ExpiredJwtException e) {
             logger.info("토큰 만료");
