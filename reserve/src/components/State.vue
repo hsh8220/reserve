@@ -7,7 +7,9 @@
         </div>
         <span id="test"></span>
         <v-divider class="divider"></v-divider>
-        <v-btn v-if="!isBefore && !isReserved" class="reserve_button" block large round color="primary" @click="reserve">신청 하기</v-btn>
+        <v-btn v-if="!isBefore && !isReserved" class="reserve_button" block large round color="primary"
+               @click="reserve">신청 하기
+        </v-btn>
         <v-card v-if="states.length > 0">
           <v-list>
             <v-list-tile
@@ -32,6 +34,7 @@
         </div>
       </v-flex>
     </v-layout>
+    <Loader :dialog="progress"></Loader>
   </v-container>
 </template>
 
@@ -45,17 +48,21 @@
         date: this.$moment(new Date()).format('YYYY-MM-DD'),
         userId: sessionStorage.userId,
         isBefore: false,
-        isReserved: false
+        isReserved: false,
+        progress: false
       }
     },
     created: function () {
+      this.progress = true
       let today = this.$moment(new Date()).format('YYYY-MM-DD')
       this.$http.get('/api/state/' + this.$route.params.id + '/' + today)
         .then(data => {
           if (data.data) {
             this.states = data.data
             this.isReserved = this.checkReserved();
+            this.progress = false
           } else {
+            this.progress = false
             alert("사용 기간이 만료되었습니다. 다시 로그인해 주세요.")
             this.$router.push('/login')
           }
@@ -63,32 +70,49 @@
     },
     methods: {
       selectedDate: function (date) {
-        this.isBefore = this.$moment(date).isBefore(this.$moment(new Date()).format('YYYY-MM-DD'))
+        if (!this.progress) { //중복 클릭 방지 코드
+          this.progress = true
+          this.isBefore = this.$moment(date).isBefore(this.$moment(new Date()).format('YYYY-MM-DD'))
 
-        this.$http.get('/api/state/' + this.$route.params.id + '/' + date)
-          .then(data => {
-            if (data.data) {
-              this.states = data.data
-              this.isReserved = this.checkReserved();
-            } else {
-              alert("사용 기간이 만료되었습니다. 다시 로그인해 주세요.")
-              this.$router.push('/login')
-            }
-          })
+          this.$http.get('/api/state/' + this.$route.params.id + '/' + date)
+            .then(data => {
+              if (data.data) {
+                this.states = data.data
+                this.isReserved = this.checkReserved();
+                this.progress = false
+              } else {
+                this.progress = false
+                alert("사용 기간이 만료되었습니다. 다시 로그인해 주세요.")
+                this.$router.push('/login')
+              }
+            })
+        }
       },
       reserve: function () {
-        let date = this.$moment(this.date).format('YYYY-MM-DD')
-        this.$http.post('/api/state/' + this.$route.params.id + '/' + date)
-          .then(data => this.selectedDate(this.date))
+        if (!this.progress) {
+          this.progress = true
+          let date = this.$moment(this.date).format('YYYY-MM-DD')
+          this.$http.post('/api/state/' + this.$route.params.id + '/' + date)
+            .then(data => {
+              this.selectedDate(this.date)
+              this.progress = false
+            })
+        }
       },
       cancel: function (id) {
-        this.$http.delete('/api/state/' + id)
-          .then(data => this.selectedDate(this.date))
+        if (!this.progress) {
+          this.progress = true
+          this.$http.delete('/api/state/' + id)
+            .then(data => {
+              this.selectedDate(this.date)
+              this.progress = false
+            })
+        }
       },
       checkReserved: function () {
         let result = false
         this.states.forEach(function (state) {
-          if (state.member.userId == sessionStorage.userId) result =  true
+          if (state.member.userId == sessionStorage.userId) result = true
         })
         return result
       }

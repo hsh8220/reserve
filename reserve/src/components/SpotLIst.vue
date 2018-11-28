@@ -16,6 +16,7 @@
         </v-card>
       </v-flex>
     </v-layout>
+    <Loader :dialog="progress"></Loader>
   </v-container>
 </template>
 
@@ -23,14 +24,18 @@
   export default {
     name: 'SpotList',
     data: () => ({
-      spots: []
+      spots: [],
+      progress: false
     }),
     created: function () {
+      this.progress = true
       this.$http.get('/api/exhibition')
         .then(data => {
           if (data.data) {
             this.spots = data.data
+            this.progress = false
           } else {
+            this.progress = false
             alert("사용 기간이 만료되었습니다. 다시 로그인해 주세요.")
             this.$router.push('/login')
           }

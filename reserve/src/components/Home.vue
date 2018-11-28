@@ -35,12 +35,15 @@
 <script>
   export default {
     name: 'Home',
-    data: () => ({
-      drawer: false
-    }),
+    data() {
+      return {
+        drawer: false
+      }
+    },
     methods: {
       home: function () {
         this.$router.push('/home/spotList')
+        this.drawer = false
       },
       logout: function () {
         this.$store.dispatch('LOGOUT')

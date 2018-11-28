@@ -3,15 +3,15 @@
     <v-content>
       <v-container fluid fill-height>
         <v-layout align-center justify-center>
-          <v-flex xs12 sm8 md3>
+          <v-flex xs12 sm8 md4>
             <v-card class="elevation-12">
               <v-toolbar dark color="primary">
-                <v-toolbar-title>로그인</v-toolbar-title>
+                <v-toolbar-title>전시대 신청</v-toolbar-title>
                 <v-spacer></v-spacer>
               </v-toolbar>
               <v-card-text>
                 <v-form>
-                  <v-text-field prepend-icon="person" name="login" label="아이디" type="text"
+                  <v-text-field prepend-icon="person" name="login" label="이름을 입력해 주세요" type="text"
                                 v-model="userId"></v-text-field>
                   <v-text-field id="password" prepend-icon="lock" name="password" label="패스워드" type="password"
                                 v-model="pw"></v-text-field>
@@ -32,11 +32,8 @@
 </template>
 
 <script>
-  import Loader from './Loader.vue'
 
   export default {
-    components: {Loader},
-    comments: {Loader},
     data() {
       return {
         userId: '',
@@ -51,9 +48,16 @@
         this.$router.push('join')
       },
       onSubmit(userId, pw) {
+        this.progress = true
         this.$store.dispatch('LOGIN', {'userId': userId, 'pw': pw})
-          .then(() => this.redirect())
-          .catch(({message}) => this.msg = message)
+          .then(() => {
+            this.progress = false
+            this.redirect()
+          })
+          .catch(({message}) => {
+            this.msg = message
+            this.progress = false
+          })
       },
       redirect() {
         if (this.$store.getters.getAccessToken != '') {
