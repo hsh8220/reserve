@@ -59,6 +59,11 @@ public class RepositoryServiceImpl implements RepositoryService {
     }
 
     @Override
+    public void removeUser(Integer id) {
+        memberRepository.deleteById(id);
+    }
+
+    @Override
     public Optional<Exhibition> getExhibitionByName(String name) {
         return Optional.ofNullable(exhibitionRepository.findByName(name));
     }
@@ -79,6 +84,11 @@ public class RepositoryServiceImpl implements RepositoryService {
         exhibition.setName(name);
         exhibition.setTime(time);
         exhibition.setGuide(guide);
+        exhibitionRepository.save(exhibition);
+    }
+
+    @Override
+    public void addExhibition(Exhibition exhibition) {
         exhibitionRepository.save(exhibition);
     }
 

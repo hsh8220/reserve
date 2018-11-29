@@ -3,16 +3,16 @@ package com.exhibition.reserve.web;
 import com.exhibition.reserve.model.Exhibition;
 import com.exhibition.reserve.model.Member;
 import com.exhibition.reserve.model.ReserveState;
-import com.exhibition.reserve.model.Role;
 import com.exhibition.reserve.service.JwtService;
 import com.exhibition.reserve.service.RepositoryService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -26,40 +26,90 @@ public class ReserveController {
     @Autowired
     JwtService jwtService;
 
+    private Logger logger = LoggerFactory.getLogger(ReserveController.class);
+
     @RequestMapping(value = "/")
     public String index() {
         return "index";
     }
 
-    @RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/user", method = RequestMethod.GET)
     @ResponseBody
-    public Member getUser(
-            @PathVariable("id") String id
+    public List<Member> getAllUser(
+            @RequestHeader(value = "accessToken") String accessToken
     ) {
-        return repositoryService.getUserById(id).orElse(null);
+        if (jwtService.checkJwt(accessToken)) {
+            return repositoryService.getUserAll().orElse(null);
+        } else {
+            return null;
+        }
     }
 
-    @RequestMapping(value = "/user", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/user", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, String> saveUser(
+            @RequestHeader(value = "accessToken") String accessToken,
             @RequestBody Member member
     ) {
         Map<String, String> result = new HashMap<>();
+
         try {
-            Role role = new Role();
-//            member.setPw(member.getPw());
-            role.setRoleName("BASIC");
-            member.setRole(role);
-            repositoryService.addUser(member);
-            result.put("result", "success");
+            if (jwtService.checkJwt(accessToken)) {
+                member.setPw("000000");
+                repositoryService.addUser(member);
+                result.put("result", "success");
+            }
         } catch (Exception e) {
+            e.printStackTrace();
             result.put("result", "error");
         }
 
         return result;
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/user", method = RequestMethod.PUT)
+    @ResponseBody
+    public Map<String, String> modifyUser(
+            @RequestHeader(value = "accessToken") String accessToken,
+            @RequestBody Member member
+    ) {
+        Map<String, String> result = new HashMap<>();
+
+        try {
+            if (jwtService.checkJwt(accessToken)) {
+                repositoryService.modifyUser(member);
+                result.put("result", "success");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put("result", "error");
+        }
+
+        return result;
+    }
+
+    @RequestMapping(value = "/api/user/{id}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public Map<String, String> deleteUser(
+            @RequestHeader(value = "accessToken") String accessToken,
+            @PathVariable(value = "id") Integer id
+    ) {
+        Map<String, String> result = new HashMap<>();
+
+        try {
+            if (jwtService.checkJwt(accessToken)) {
+                repositoryService.removeUser(id);
+                result.put("result", "success");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put("result", "error");
+        }
+
+        return result;
+    }
+
+    @RequestMapping(value = "/api/login", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> login(
             @RequestBody Member member
@@ -70,14 +120,11 @@ public class ReserveController {
 
         try {
             Member rawMamber = repositoryService.getUserById(member.getUserId()).get();
+            logger.info(rawMamber.getUserId() + "님이 로그인하였습니다.");
             String accessToken = jwtService.makeJwt(rawMamber);
-            if (member.getPw().equals(rawMamber.getPw())) {
-                result.put("member", rawMamber);
-                result.put("result", "success");
-                result.put("accessToken", accessToken);
-            } else {
-                result.put("result", "noPW");
-            }
+            result.put("member", rawMamber);
+            result.put("result", "success");
+            result.put("accessToken", accessToken);
         } catch (NoSuchElementException e) {
             result.put("result", "noID");
         } catch (Exception e) {
@@ -97,6 +144,27 @@ public class ReserveController {
         } else {
             return null;
         }
+    }
+
+    @RequestMapping(value = "/api/exhibition", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, String> saveExhibition(
+            @RequestHeader(value = "accessToken") String accessToken,
+            @RequestBody Exhibition exhibition
+    ) {
+        Map<String, String> result = new HashMap<>();
+
+        try {
+            if (jwtService.checkJwt(accessToken)) {
+                repositoryService.addExhibition(exhibition);
+                result.put("result", "success");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put("result", "error");
+        }
+
+        return result;
     }
 
     @RequestMapping(value = "/api/state/{id}/{date}", method = RequestMethod.GET)

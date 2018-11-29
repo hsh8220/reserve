@@ -15,11 +15,13 @@ public interface RepositoryService {
     void addUser (Member member);
     void modifyUser (Member member);
     void removeUser (String userId);
+    void removeUser (Integer id);
 
     Optional<Exhibition> getExhibitionByName (String name);
     Optional<Exhibition> getExhibitionById (Integer id);
     Optional<List<Exhibition>> getExhibitionAll ();
     void addExhibition (String name, String time, String guide);
+    void addExhibition (Exhibition exhibition);
     void modifyExhibition (Exhibition exhibition);
     void removeExhibition (String name);
 

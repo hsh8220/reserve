@@ -94,8 +94,8 @@
           let date = this.$moment(this.date).format('YYYY-MM-DD')
           this.$http.post('/api/state/' + this.$route.params.id + '/' + date)
             .then(data => {
-              this.selectedDate(this.date)
               this.progress = false
+              this.selectedDate(this.date)
             })
         }
       },
@@ -104,8 +104,8 @@
           this.progress = true
           this.$http.delete('/api/state/' + id)
             .then(data => {
-              this.selectedDate(this.date)
               this.progress = false
+              this.selectedDate(this.date)
             })
         }
       },

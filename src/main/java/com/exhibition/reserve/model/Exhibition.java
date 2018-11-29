@@ -10,17 +10,17 @@ import javax.persistence.*;
 public class Exhibition {
 
     @Id
-    @Column(name = "id")
+    @Column
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @Column(name = "name")
+    @Column
     private String name;
 
-    @Column(name = "time")
+    @Column
     private String time;
 
-    @Column(name = "guide")
+    @Column
     private String guide;
 
 }

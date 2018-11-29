@@ -6,6 +6,9 @@ import Join from '@/components/Join'
 import Home from '@/components/Home'
 import SpotList from '@/components/SpotList'
 import State from '@/components/State'
+import Setting from '@/components/Setting'
+import UserAdd from '@/components/UserAdd'
+import SpotAdd from '@/components/SpotAdd'
 
 Vue.use(Router)
 
@@ -43,6 +46,18 @@ export default new Router({
         {
           path: 'state/:id',
           component: State
+        },
+        {
+          path: 'setting',
+          component: Setting
+        },
+        {
+          path: 'userAdd',
+          component: UserAdd
+        },
+        {
+          path: 'spotAdd',
+          component: SpotAdd
         }
       ],
       beforeEnter: requireAuth()

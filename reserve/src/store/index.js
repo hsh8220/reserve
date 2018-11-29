@@ -43,7 +43,7 @@ export default new Vuex.Store({
     },
     actions: {
       LOGIN({commit}, member) {
-        let result =  axios.post('login', member)
+        let result =  axios.post('/api/login', member)
           .then(({data}) => {
             commit('LOGIN', data)
             axios.defaults.headers.common['accessToken'] = data.accessToken;

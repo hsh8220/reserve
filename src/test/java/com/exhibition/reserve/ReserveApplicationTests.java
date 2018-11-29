@@ -10,9 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static org.hamcrest.Matchers.anything;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.Matchers.is;
 
@@ -33,26 +30,28 @@ public class ReserveApplicationTests {
 	@Test
 	public void userRepositioryTest() {
 		Member member1 = new Member();
-		member1.setUserId("test");
-		member1.setPw("test");
-		member1.setName("han");
+		member1.setUserId("한상호");
+		member1.setPw("1");
+		member1.setName("한상호");
+		member1.setRole("BASIC");
 		Member member2 = new Member();
-		member2.setUserId("hsh");
-		member2.setPw("test");
-		member2.setName("한상호");
+		member2.setUserId("오민경");
+		member2.setPw("1");
+		member2.setName("오민경");
+		member2.setRole("BASIC");
 
 		repositoryService.addUser(member1);
 		repositoryService.addUser(member2);
-		assertThat(repositoryService.getUserById("test").map(Member::getName).orElse("not"), is("han"));
+		assertThat(repositoryService.getUserById("한상호").map(Member::getName).orElse("not"), is("한상호"));
 		assertThat(repositoryService.getUserAll().map(List::size).orElse(0), is(2));
 
-		Member modiUser = repositoryService.getUserById("test").orElse(null);
-		modiUser.setName("한상호");
+		Member modiUser = repositoryService.getUserById("한상호").orElse(null);
+		modiUser.setName("한상호1");
 		repositoryService.modifyUser(modiUser);
-		assertThat(repositoryService.getUserById("test").map(Member::getName).orElse("not"), is("한상호"));
+		assertThat(repositoryService.getUserById("한상호").map(Member::getName).orElse("not"), is("한상호1"));
 
-		repositoryService.removeUser("test");
-		assertThat(repositoryService.getUserById("test").map(Member::getName).orElse("not"), is("not"));
+		repositoryService.removeUser("한상호");
+		assertThat(repositoryService.getUserById("한상호").map(Member::getName).orElse("not"), is("not"));
 	}
 
 	@Test

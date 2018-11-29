@@ -6,20 +6,31 @@
       app
     >
       <v-list dense>
-        <v-list-tile @click="">
+        <v-subheader>메뉴</v-subheader>
+        <v-list-tile @click="home">
           <v-list-tile-action>
             <v-icon>home</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
-            <v-list-tile-title @click="home()">처음으로</v-list-tile-title>
+            <v-list-tile-title>목록 보기</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-        <v-list-tile @click="">
+        <v-list-tile @click="setting">
+          <v-list-tile-action>
+            <v-icon>settings</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>관리자 설정</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-divider></v-divider>
+        <v-subheader>로그 아웃</v-subheader>
+        <v-list-tile @click="logout">
           <v-list-tile-action>
             <v-icon>power_settings_new</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
-            <v-list-tile-title @click="logout()">로그아웃</v-list-tile-title>
+            <v-list-tile-title>로그아웃</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
@@ -49,6 +60,10 @@
         this.$store.dispatch('LOGOUT')
           .then(() => this.$router.push('/login'))
           .catch(({message}) => this.msg = message)
+      },
+      setting: function () {
+        this.$router.push('/home/setting')
+        this.drawer = false
       }
     }
   }

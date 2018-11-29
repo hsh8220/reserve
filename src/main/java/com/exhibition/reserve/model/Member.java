@@ -25,7 +25,6 @@ public class Member {
     @Column(nullable = false, length = 50)
     private String name;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "role_id")
-    private Role role;
+    @Column
+    private String role;
 }

@@ -37,7 +37,7 @@ public class JwtServiceImpl implements JwtService {
         Map<String, Object> map = new HashMap<>();
 
         map.put("id", member.getUserId());
-        map.put("role", member.getRole().getRoleName());
+        map.put("role", member.getRole());
 
         JwtBuilder builder = Jwts.builder().setHeader(headerMap)
                 .setClaims(map)

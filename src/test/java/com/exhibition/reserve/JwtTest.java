@@ -1,7 +1,6 @@
 package com.exhibition.reserve;
 
 import com.exhibition.reserve.model.Member;
-import com.exhibition.reserve.model.Role;
 import com.exhibition.reserve.service.JwtService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Arrays;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
@@ -25,9 +23,7 @@ public class JwtTest {
         member.setUserId("test");
         member.setPw("test");
         member.setName("test");
-        Role role = new Role();
-        role.setRoleName("BASIC");
-        member.setRole(role);
+        member.setRole("BASIC");
 
         try {
             String jwt = jwtService.makeJwt(member);
