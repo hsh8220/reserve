@@ -18,7 +18,7 @@
                 </v-form>
               </v-card-text>
               <v-card-actions>
-                <v-btn block color="primary" v-on:click="onSubmit(userId, pw)">로그인</v-btn>
+                <v-btn block color="primary" @click="onSubmit(userId, pw)">로그인</v-btn>
                 <!--<v-btn color="primary" v-on:click="join()">가입하기</v-btn>-->
               </v-card-actions>
             </v-card>
@@ -76,7 +76,10 @@
     background-position: center;
     background-size: cover;
     filter: blur(8px);
-    -webkit-filter: blur(3px);
+    -webkit-filter: blur(8px);
+    -ms-filter: blur(8px);
+    -moz-filter: blur(8px);
+    -o-filter: blur(8px);
 
     position: fixed;
     left: 0;

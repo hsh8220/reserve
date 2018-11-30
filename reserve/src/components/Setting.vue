@@ -19,7 +19,7 @@
             </v-list-tile-content>
           </v-list-tile>
           <v-list-tile>
-            <v-list-tile-content>
+            <v-list-tile-content @click="userEdit">
               <v-list-tile-title>사용자 편집</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
@@ -61,7 +61,10 @@
       },
       spotAdd: function () {
         this.$router.push('/home/spotAdd')
-      }
+      },
+      userEdit: function () {
+        this.$router.push('/home/userEdit')
+      },
     }
   }
 </script>

@@ -8,6 +8,7 @@ import SpotList from '@/components/SpotList'
 import State from '@/components/State'
 import Setting from '@/components/Setting'
 import UserAdd from '@/components/UserAdd'
+import UserEdit from '@/components/UserEdit'
 import SpotAdd from '@/components/SpotAdd'
 
 Vue.use(Router)
@@ -58,6 +59,10 @@ export default new Router({
         {
           path: 'spotAdd',
           component: SpotAdd
+        },
+        {
+          path: 'userEdit',
+          component: UserEdit
         }
       ],
       beforeEnter: requireAuth()
