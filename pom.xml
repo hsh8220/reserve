@@ -6,7 +6,7 @@
 	<groupId>com.exhibition</groupId>
 	<artifactId>reserve</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 
 	<name>reserve</name>
 	<description>Reserve App</description>

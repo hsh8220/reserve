@@ -11,7 +11,7 @@
         >
           <v-card-text>
             <div class="display-1 text-xs-center">{{spot.name}}</div>
-            <p class="headline text-xs-center">{{spot.time}}</p>
+            <p class="title text-xs-center">{{spot.time}}</p>
           </v-card-text>
         </v-card>
       </v-flex>

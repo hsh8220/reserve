@@ -7,6 +7,7 @@
         </div>
         <span id="test"></span>
         <v-divider class="divider"></v-divider>
+        <v-subheader>총 {{states.length}}명</v-subheader>
         <v-btn v-if="!isBefore && !isReserved" class="reserve_button" block large round color="primary"
                @click="reserve">신청 하기
         </v-btn>
