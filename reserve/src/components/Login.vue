@@ -75,11 +75,11 @@
     background-image: url("https://assetsnffrgf-a.akamaihd.net/assets/m/302016049/univ/art/302016049_univ_lsr_xl.jpg");
     background-position: center;
     background-size: cover;
-    filter: blur(8px);
-    -webkit-filter: blur(8px);
-    -ms-filter: blur(8px);
-    -moz-filter: blur(8px);
-    -o-filter: blur(8px);
+    filter: blur(3px);
+    -webkit-filter: blur(3px);
+    -ms-filter: blur(3px);
+    -moz-filter: blur(3px);
+    -o-filter: blur(3px);
 
     position: fixed;
     left: 0;

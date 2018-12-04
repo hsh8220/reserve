@@ -62,6 +62,9 @@
           }).then(data => {
             if (data.data.result == "error") {
               alert("사용자 이름이 중복 됩니다.")
+            }else {
+              alert("저장하였습니다.")
+              this.clear();
             }
           })
         }

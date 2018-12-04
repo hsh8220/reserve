@@ -7,6 +7,8 @@ import com.exhibition.reserve.repository.ExhibitionRepository;
 import com.exhibition.reserve.repository.ReserveStateRepository;
 import com.exhibition.reserve.repository.MemberRepository;
 import com.exhibition.reserve.service.RepositoryService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,8 @@ import java.util.Optional;
 
 @Service
 public class RepositoryServiceImpl implements RepositoryService {
+
+    private Logger logger = LoggerFactory.getLogger(JwtServiceImpl.class);
 
     @Autowired
     MemberRepository memberRepository;
@@ -46,6 +50,7 @@ public class RepositoryServiceImpl implements RepositoryService {
     @Override
     public void addUser(Member member) {
         memberRepository.save(member);
+        logger.info(member.getUserId() + "사용자 추가.");
     }
 
     @Override
@@ -58,6 +63,7 @@ public class RepositoryServiceImpl implements RepositoryService {
         Member member = memberRepository.findByUserId(userId);
         reserveStateRepository.deleteByMember(member);
         memberRepository.delete(member);
+        logger.info(member.getUserId() + "사용자 삭제.");
     }
 
     @Override
@@ -65,6 +71,7 @@ public class RepositoryServiceImpl implements RepositoryService {
         Member member = memberRepository.findById(id).orElse(null);
         reserveStateRepository.deleteByMember(member);
         memberRepository.deleteById(id);
+        logger.info(member.getUserId() + "사용자 삭제.");
     }
 
     @Override
@@ -89,11 +96,13 @@ public class RepositoryServiceImpl implements RepositoryService {
         exhibition.setTime(time);
         exhibition.setGuide(guide);
         exhibitionRepository.save(exhibition);
+        logger.info(name + "전시대 추가");
     }
 
     @Override
     public void addExhibition(Exhibition exhibition) {
         exhibitionRepository.save(exhibition);
+        logger.info(exhibition.getName() + "전시대 추가");
     }
 
     @Override
@@ -106,6 +115,15 @@ public class RepositoryServiceImpl implements RepositoryService {
         Exhibition exhibition = exhibitionRepository.findByName(name);
         reserveStateRepository.deleteByExhibition(exhibition);
         exhibitionRepository.delete(exhibition);
+        logger.info(name + "전시대 삭제");
+    }
+
+    @Override
+    public void removeExhibition(Integer id) {
+        Exhibition exhibition = exhibitionRepository.findById(id).orElse(null);
+        reserveStateRepository.deleteByExhibition(exhibition);
+        exhibitionRepository.delete(exhibition);
+        logger.info(exhibition.getName() + "전시대 삭제");
     }
 
     @Override

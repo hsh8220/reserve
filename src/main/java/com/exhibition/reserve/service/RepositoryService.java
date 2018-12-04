@@ -24,6 +24,7 @@ public interface RepositoryService {
     void addExhibition (Exhibition exhibition);
     void modifyExhibition (Exhibition exhibition);
     void removeExhibition (String name);
+    void removeExhibition (Integer id);
 
     Optional<List<ReserveState>> getStateByUserId(String userId);
 

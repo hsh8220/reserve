@@ -40,7 +40,7 @@
             </v-list-tile-content>
           </v-list-tile>
           <v-list-tile>
-            <v-list-tile-content>
+            <v-list-tile-content @click="spotEdit">
               <v-list-tile-title>전시대 편집</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
@@ -65,6 +65,9 @@
       userEdit: function () {
         this.$router.push('/home/userEdit')
       },
+      spotEdit: function () {
+        this.$router.push('/home/spotEdit')
+      }
     }
   }
 </script>

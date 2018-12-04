@@ -10,6 +10,7 @@ import Setting from '@/components/Setting'
 import UserAdd from '@/components/UserAdd'
 import UserEdit from '@/components/UserEdit'
 import SpotAdd from '@/components/SpotAdd'
+import SpotEdit from '@/components/SpotEdit'
 
 Vue.use(Router)
 
@@ -63,6 +64,10 @@ export default new Router({
         {
           path: 'userEdit',
           component: UserEdit
+        },
+        {
+          path: 'spotEdit',
+          component: SpotEdit
         }
       ],
       beforeEnter: requireAuth()

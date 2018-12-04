@@ -31,7 +31,8 @@ export default new Vuex.Store({
           state.name = member.member.name,
           state.result = member.result,
           sessionStorage.accessToken = member.accessToken,
-          sessionStorage.userId = member.member.userId
+          sessionStorage.userId = member.member.userId,
+          sessionStorage.role = member.member.role
       },
       LOGOUT(state) {
         state.accessToken = null,
@@ -43,7 +44,7 @@ export default new Vuex.Store({
     },
     actions: {
       LOGIN({commit}, member) {
-        let result =  axios.post('/api/login', member)
+        let result = axios.post('/api/login', member)
           .then(({data}) => {
             commit('LOGIN', data)
             axios.defaults.headers.common['accessToken'] = data.accessToken;

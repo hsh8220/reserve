@@ -15,7 +15,7 @@
             <v-list-tile-title>목록 보기</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-        <v-list-tile @click="setting">
+        <v-list-tile v-if="setAuth" @click="setting">
           <v-list-tile-action>
             <v-icon>settings</v-icon>
           </v-list-tile-action>
@@ -48,7 +48,8 @@
     name: 'Home',
     data() {
       return {
-        drawer: false
+        drawer: false,
+        setAuth: sessionStorage.role == 'ADMIN'
       }
     },
     methods: {

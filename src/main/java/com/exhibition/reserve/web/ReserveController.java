@@ -167,6 +167,48 @@ public class ReserveController {
         return result;
     }
 
+    @RequestMapping(value = "/api/exhibition", method = RequestMethod.PUT)
+    @ResponseBody
+    public Map<String, String> modifyExhibition(
+            @RequestHeader(value = "accessToken") String accessToken,
+            @RequestBody Exhibition exhibition
+    ) {
+        Map<String, String> result = new HashMap<>();
+
+        try {
+            if (jwtService.checkJwt(accessToken)) {
+                repositoryService.modifyExhibition(exhibition);
+                result.put("result", "success");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put("result", "error");
+        }
+
+        return result;
+    }
+
+    @RequestMapping(value = "/api/exhibition/{id}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public Map<String, String> modifyExhibition(
+            @RequestHeader(value = "accessToken") String accessToken,
+            @PathVariable(value = "id") Integer id
+    ) {
+        Map<String, String> result = new HashMap<>();
+
+        try {
+            if (jwtService.checkJwt(accessToken)) {
+                repositoryService.removeExhibition(id);
+                result.put("result", "success");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put("result", "error");
+        }
+
+        return result;
+    }
+
     @RequestMapping(value = "/api/state/{id}/{date}", method = RequestMethod.GET)
     @ResponseBody
     public List<ReserveState> getReserveStates(

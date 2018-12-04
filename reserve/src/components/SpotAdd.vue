@@ -65,6 +65,9 @@
           }).then(data => {
             if (data.data.result == "error") {
               alert("오류가 발생하였습니다.")
+            }else{
+              alert("저장하였습니다.")
+              this.clear();
             }
           })
         }
