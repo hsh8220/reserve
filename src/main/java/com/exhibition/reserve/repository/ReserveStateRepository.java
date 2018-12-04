@@ -5,6 +5,7 @@ import com.exhibition.reserve.model.Member;
 import com.exhibition.reserve.model.ReserveState;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -13,4 +14,8 @@ import java.util.List;
 public interface ReserveStateRepository extends JpaRepository<ReserveState, Integer> {
     List<ReserveState> findByExhibitionAndStartTimeBetween (Exhibition exhibition, Timestamp t1, Timestamp t2);
     List<ReserveState> findByMember (Member member);
+    @Transactional
+    void deleteByExhibition (Exhibition exhibition);
+    @Transactional
+    void deleteByMember (Member member);
 }

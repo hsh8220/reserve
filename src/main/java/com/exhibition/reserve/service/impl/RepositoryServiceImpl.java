@@ -55,11 +55,15 @@ public class RepositoryServiceImpl implements RepositoryService {
 
     @Override
     public void removeUser(String userId) {
-        memberRepository.deleteByUserId(userId);
+        Member member = memberRepository.findByUserId(userId);
+        reserveStateRepository.deleteByMember(member);
+        memberRepository.delete(member);
     }
 
     @Override
     public void removeUser(Integer id) {
+        Member member = memberRepository.findById(id).orElse(null);
+        reserveStateRepository.deleteByMember(member);
         memberRepository.deleteById(id);
     }
 
@@ -100,6 +104,7 @@ public class RepositoryServiceImpl implements RepositoryService {
     @Override
     public void removeExhibition(String name) {
         Exhibition exhibition = exhibitionRepository.findByName(name);
+        reserveStateRepository.deleteByExhibition(exhibition);
         exhibitionRepository.delete(exhibition);
     }
 
