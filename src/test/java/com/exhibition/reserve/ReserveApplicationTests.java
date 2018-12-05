@@ -54,7 +54,7 @@ public class ReserveApplicationTests {
         assertThat(repositoryService.getUserById("test2").map(Member::getName).orElse("not"), is("test3"));
 
         repositoryService.removeUser("test1");
-        assertThat(repositoryService.getUserById("오민경").map(Member::getName).orElse("not"), is("not"));
+        assertThat(repositoryService.getUserById("test1").map(Member::getName).orElse("not"), is("not"));
         repositoryService.removeUser("test2");
 
     }
