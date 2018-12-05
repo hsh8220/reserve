@@ -24,14 +24,7 @@ public class ReserveApplicationTests {
     RepositoryService repositoryService;
 
     @Test
-    public void contextLoads() {
-    }
-
-    @Test
     public void userRepositioryTest() {
-        //기존데이터삭제
-        try {repositoryService.removeUser("test1");} catch (Exception ignored) {}
-        try {repositoryService.removeUser("test2");} catch (Exception ignored) {}
 
         Member member1 = new Member();
         member1.setUserId("test1");
@@ -61,9 +54,6 @@ public class ReserveApplicationTests {
 
     @Test
     public void exhibitionRepositoryTest() {
-        //기존데이터삭제
-        try {repositoryService.removeExhibition("test1");} catch (Exception ignored) {}
-        try {repositoryService.removeExhibition("test2");} catch (Exception ignored) {}
 
         repositoryService.addExhibition("test1", "오전 9:30~11:30", "한상호");
         repositoryService.addExhibition("test2", "오전 9:30~11:30", "김서중");
@@ -84,12 +74,6 @@ public class ReserveApplicationTests {
 
     @Test
     public void stateRepositoryTest() {
-        //기존데이터삭제
-        try {repositoryService.removeUser("test1");} catch (Exception ignored) {}
-        try {repositoryService.removeUser("test2");} catch (Exception ignored) {}
-        try {repositoryService.removeUser("test3");} catch (Exception ignored) {}
-        try {repositoryService.removeExhibition("spot1");} catch (Exception ignored) {}
-        try {repositoryService.removeExhibition("spot2");} catch (Exception ignored) {}
 
         Timestamp t1 = new Timestamp(118, 7, 7, 10, 0, 0, 0);
         Timestamp t2 = new Timestamp(118, 7, 7, 12, 0, 0, 0);
