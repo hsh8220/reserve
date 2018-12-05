@@ -49,7 +49,7 @@
     data() {
       return {
         drawer: false,
-        setAuth: sessionStorage.role == 'ADMIN'
+        setAuth: sessionStorage.role == 'ADMIN' || sessionStorage.role == 'MANAGER'
       }
     },
     methods: {

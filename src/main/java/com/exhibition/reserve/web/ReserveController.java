@@ -230,6 +230,33 @@ public class ReserveController {
         }
     }
 
+    //month는 2018-12 형식의 String
+    @RequestMapping(value = "/api/state/month/{id}/{month}", method = RequestMethod.GET)
+    @ResponseBody
+    public List<ReserveState> getReserveStatesMonth(
+            @RequestHeader(value = "accessToken") String accessToken,
+            @PathVariable(value = "id") Integer id,
+            @PathVariable(value = "month") String month
+    ) {
+        try {
+            if (jwtService.checkJwt(accessToken)) {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                Calendar cal = Calendar.getInstance();
+                cal.setTimeInMillis(dateFormat.parse(month+"-01").getTime());
+                Timestamp start = new Timestamp(cal.getTimeInMillis());
+                int lastDay = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+                Timestamp end = new Timestamp(dateFormat.parse(month+"-"+lastDay).getTime());
+
+                return repositoryService.getStateByExhibitionId(id, start, end).orElse(null);
+            } else {
+                return null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     @RequestMapping(value = "/api/state/{id}/{date}", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> setReserveStates(

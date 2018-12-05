@@ -3,7 +3,8 @@
     <v-layout>
       <v-flex xs12 sm6 offset-sm3>
         <div>
-          <v-date-picker v-model="date" locale="ko" full-width @input="selectedDate"></v-date-picker>
+          <v-date-picker v-model="date" locale="ko" full-width @input="selectedDate" :events="arrayEvents"
+                         event-color="pink" :picker-date.sync="pickerDate"></v-date-picker>
         </div>
         <span id="test"></span>
         <v-divider class="divider"></v-divider>
@@ -47,6 +48,8 @@
       return {
         states: [],
         date: this.$moment(new Date()).format('YYYY-MM-DD'),
+        pickerDate: null,
+        arrayEvents: [],
         userId: sessionStorage.userId,
         isBefore: false,
         isReserved: false,
@@ -56,6 +59,7 @@
     created: function () {
       this.progress = true
       let today = this.$moment(new Date()).format('YYYY-MM-DD')
+      let month = this.$moment(new Date()).format('YYYY-MM')
       this.$http.get('/api/state/' + this.$route.params.id + '/' + today)
         .then(data => {
           if (data.data) {
@@ -68,6 +72,11 @@
             this.$router.push('/login')
           }
         })
+    },
+    watch: {
+      pickerDate (val) {
+        this.viewCalendarState(val)
+      }
     },
     methods: {
       selectedDate: function (date) {
@@ -95,6 +104,7 @@
           let date = this.$moment(this.date).format('YYYY-MM-DD')
           this.$http.post('/api/state/' + this.$route.params.id + '/' + date)
             .then(data => {
+              this.viewCalendarState(this.pickerDate)
               this.progress = false
               this.selectedDate(this.date)
             })
@@ -105,6 +115,7 @@
           this.progress = true
           this.$http.delete('/api/state/' + id)
             .then(data => {
+              this.viewCalendarState(this.pickerDate)
               this.progress = false
               this.selectedDate(this.date)
             })
@@ -116,6 +127,12 @@
           if (state.member.userId == sessionStorage.userId) result = true
         })
         return result
+      },
+      viewCalendarState:function (val) {
+        this.$http.get('/api/state/month/' + this.$route.params.id + '/' + val) //달력에 신청자있는 날에 표시
+          .then(data => {
+            this.arrayEvents = data.data.map(state => this.$moment(state.startTime).format('YYYY-MM-DD'));
+          })
       }
     }
   }

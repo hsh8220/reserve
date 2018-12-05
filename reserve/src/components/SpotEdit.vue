@@ -61,7 +61,7 @@
                     color="primary"
                     @click="update"
                   >
-                    저장
+                    수정
                   </v-btn>
                   <v-btn color="red lighten-2" dark @click="remove(spot.id)">삭제</v-btn>
                 </v-card-actions>

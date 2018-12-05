@@ -171,6 +171,12 @@ public class RepositoryServiceImpl implements RepositoryService {
     }
 
     @Override
+    public Optional<List<ReserveState>> getStateByExhibitionId(Integer exhibitionId, Timestamp start, Timestamp end) {
+        Exhibition exhibition = exhibitionRepository.findById(exhibitionId).orElse(null);
+        return Optional.ofNullable(reserveStateRepository.findByExhibitionAndStartTimeBetween(exhibition, start, end));
+    }
+
+    @Override
     public void addState(ReserveState state) {
         reserveStateRepository.save(state);
     }

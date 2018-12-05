@@ -36,6 +36,14 @@ public interface RepositoryService {
      */
     Optional<List<ReserveState>> getStateByExhibitionId(Integer exhibitionId, Timestamp date);
     Optional<List<ReserveState>> getStateByExhibitionName(String exhibitionName, Timestamp date);
+    /**
+     *
+     * @param exhibitionId
+     * @param start 시작 날짜
+     * @param end 끝 날짜
+     * @return
+     */
+    Optional<List<ReserveState>> getStateByExhibitionId(Integer exhibitionId, Timestamp start, Timestamp end);
     void addState(ReserveState state);
     void modifyState(ReserveState state);
     void removeState(Integer id);
