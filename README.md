@@ -1,4 +1,4 @@
-# 전시대 신청 어플리케이션
+# 전시대 신청 어플리케이션 [![Build Status](https://travis-ci.org/hsh8220/reserve.svg?branch=master)](https://travis-ci.org/hsh8220/reserve)
 
 > Spring boot, Spring JPA, Vue js, vuex, vue router, vue loader, webpack, mariaDB
 
