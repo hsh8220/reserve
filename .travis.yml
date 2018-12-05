@@ -11,7 +11,11 @@ cache:
   directories:
   - '$HOME/.m2/repository'
 
-script: "./mvnw package"
+install:
+  - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+
+script:
+  - mvn package
 
 # CI 실행 완료시 메일로 알람
 notifications:
