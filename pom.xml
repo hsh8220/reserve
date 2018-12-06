@@ -5,7 +5,7 @@
 
 	<groupId>com.exhibition</groupId>
 	<artifactId>reserve</artifactId>
-	<version>1.0.1-SNAPSHOT</version>
+	<version>1.0.2-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>reserve</name>

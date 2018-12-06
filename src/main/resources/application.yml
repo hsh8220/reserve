@@ -1,0 +1,13 @@
+spring:
+  profiles:
+    active: local
+
+#local 환경
+---
+spring:
+  profiles: local
+  thymeleaf:
+    prefix: classpath:/static/
+  jpa:
+    hibernate:
+      ddl-auto: update
