@@ -22,3 +22,16 @@ notifications:
   email:
     recipients:
     - hsh8220@gmail.com
+
+deploy:
+- provider: s3
+  access_key_id: $AWS_ACCESS_KEY # Travis repo settings에 설정된 값
+  secret_access_key: $AWS_SECRET_KEY # Travis repo settings에 설정된 값
+  bucket: springboot-reserve-deploy
+  region: ap-northeast-2
+  skip_cleanup: true
+  acl: public_read
+  wait-until-deployed: true
+  on:
+    repo: hsh8220/reserve #Github 주소
+    branch: master
