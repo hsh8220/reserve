@@ -11,10 +11,10 @@ cache:
   - '$HOME/.m2/repository'
 
 before_install:
-  - chmod +x mvnw
+- chmod +x mvnw
 
 script:
-  - ./mvnw clean package
+- ./mvnw clean package
 
 notifications:
   email:
@@ -35,6 +35,20 @@ deploy:
   skip_cleanup: true
   acl: public_read
   local_dir: deploy
+  wait-until-deployed: true
+  on:
+    repo: hsh8220/reserve
+    branch: master
+
+- provider: codedeploy
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
+  bucket: springboot-reserve-deploy
+  key: springboot-reserve.zip
+  bundle_type: zip
+  application: springboot-reserve
+  deployment_group: springboot-reserve-group
+  region: ap-northeast-2
   wait-until-deployed: true
   on:
     repo: hsh8220/reserve
