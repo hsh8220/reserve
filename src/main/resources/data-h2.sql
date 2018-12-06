@@ -1,0 +1,1 @@
+insert into member values (1, '한상호', '000000', 'ADMIN', '한상호');

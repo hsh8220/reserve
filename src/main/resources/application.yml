@@ -8,6 +8,12 @@ spring:
   profiles: local
   thymeleaf:
     prefix: classpath:/static/
+  datasource:
+    data: classpath:data-h2.sql
   jpa:
+    show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
+  h2:
+    console:
+      enabled: true
