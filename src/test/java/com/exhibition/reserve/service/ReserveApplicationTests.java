@@ -1,9 +1,8 @@
-package com.exhibition.reserve;
+package com.exhibition.reserve.service;
 
 import com.exhibition.reserve.model.Exhibition;
 import com.exhibition.reserve.model.Member;
 import com.exhibition.reserve.model.ReserveState;
-import com.exhibition.reserve.service.RepositoryService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

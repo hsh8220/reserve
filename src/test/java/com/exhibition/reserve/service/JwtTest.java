@@ -1,4 +1,4 @@
-package com.exhibition.reserve;
+package com.exhibition.reserve.service;
 
 import com.exhibition.reserve.model.Member;
 import com.exhibition.reserve.service.JwtService;
