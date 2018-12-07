@@ -4,6 +4,8 @@
       <v-card flat>
         <v-toolbar color="transparent" card>
           <v-toolbar-title><h2>사용자 편집</h2></v-toolbar-title>
+          <v-spacer></v-spacer>
+          <span>총 {{users.length}}명</span>
         </v-toolbar>
         <v-list dense>
           <v-list-tile

@@ -9,7 +9,8 @@
         <span id="test"></span>
         <v-divider class="divider"></v-divider>
         <v-subheader>총 {{states.length}}명</v-subheader>
-        <v-btn v-if="!isBefore && !isReserved" class="reserve_button" block large round color="primary"
+        <v-alert v-if="states.length >= 10" :value="true" type="info">더 이상 신청하실 수 없습니다.</v-alert>
+        <v-btn v-else-if="!isBefore && !isReserved" class="reserve_button" block large round color="primary"
                @click="reserve">신청 하기
         </v-btn>
         <v-card v-if="states.length > 0">

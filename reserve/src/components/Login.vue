@@ -8,6 +8,8 @@
             <v-card class="elevation-12">
               <v-toolbar color="transparent" card>
                 <v-toolbar-title><h2>전시대 신청</h2></v-toolbar-title>
+                <v-spacer></v-spacer>
+                v.1.2.0
               </v-toolbar>
               <v-card-text>
                 <v-form>
