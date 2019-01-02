@@ -8,10 +8,10 @@
         </div>
         <span id="test"></span>
         <v-divider class="divider"></v-divider>
-        <v-subheader>총 {{states.length}}명</v-subheader>
+        <v-subheader>총 {{states.length}}명<v-spacer></v-spacer>인도자 : {{this.$route.params.guide}}</v-subheader>
         <v-alert v-if="states.length >= 10" :value="true" type="info">더 이상 신청하실 수 없습니다.</v-alert>
-        <v-btn v-else-if="!isBefore && !isReserved" class="reserve_button" block large round color="primary"
-               @click="reserve">신청 하기
+        <v-btn v-else-if="isView" class="reserve_button" block large round color="primary"
+               @click="reserve">{{applyButtonString}}
         </v-btn>
         <v-card v-if="states.length > 0">
           <v-list>
@@ -33,7 +33,7 @@
         </v-card>
         <div class="title" v-else>
           <v-icon large>error</v-icon>
-          신청자가 존재하지 않습니다.
+          전시대 마련이 없습니다.
         </div>
       </v-flex>
     </v-layout>
@@ -54,7 +54,22 @@
         userId: sessionStorage.userId,
         isBefore: false,
         isReserved: false,
-        progress: false
+        isGuide: this.$route.params.guide == sessionStorage.userId,
+        progress: false,
+        applyButtonString: '신청 하기'
+      }
+    },
+    computed: {
+      isView: function () {
+        let result = false;
+        if(this.isGuide) {
+          this.applyButtonString = '봉사 만들기'
+          if(!this.isBefore && !this.isReserved) result = true;
+        }
+        else {
+          if(!this.isBefore && !this.isReserved && this.states.length > 0) result = true;
+        }
+        return result
       }
     },
     created: function () {
@@ -65,7 +80,7 @@
         .then(data => {
           if (data.data) {
             this.states = data.data
-            this.isReserved = this.checkReserved();
+            this.isReserved = this.checkReserved()
             this.progress = false
           } else {
             this.progress = false

@@ -46,7 +46,7 @@ export default new Router({
           component: SpotList
         },
         {
-          path: 'state/:id',
+          path: 'state/:id/:guide',
           component: State
         },
         {

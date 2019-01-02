@@ -4,14 +4,13 @@
       <v-flex xs12
               v-for="spot in spots"
               :key="spot.id"
-              @click="selectSpot(spot.id)">
-        <v-card height="100px"
-                class="white--text"
-                color="blue-grey"
+              @click="selectSpot(spot.id, spot.guide)">
+        <v-card color="grey lighten-2"
         >
           <v-card-text>
-            <div class="display-1 text-xs-center">{{spot.name}}</div>
-            <p class="title text-xs-center">{{spot.time}}</p>
+            <div class="display-1 text-xs-center black--text">{{spot.name}}</div>
+            <p></p>
+            <div class="title text-xs-center primary--text">{{spot.time}}</div>
           </v-card-text>
         </v-card>
       </v-flex>
@@ -42,8 +41,8 @@
         })
     },
     methods: {
-      selectSpot: function (id) {
-        this.$router.push('/home/state/'+id)
+      selectSpot: function (id, guide) {
+        this.$router.push('/home/state/'+id+'/'+guide)
       }
     }
   }

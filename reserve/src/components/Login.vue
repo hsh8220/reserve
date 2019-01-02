@@ -9,7 +9,7 @@
               <v-toolbar color="transparent" card>
                 <v-toolbar-title><h2>전시대 신청</h2></v-toolbar-title>
                 <v-spacer></v-spacer>
-                v.1.2.0
+                v.1.3.0
               </v-toolbar>
               <v-card-text>
                 <v-form>
@@ -53,15 +53,16 @@
         this.$store.dispatch('LOGIN', {'userId': userId, 'pw': pw})
           .then(() => {
             this.progress = false
-            this.redirect()
+            this.redirect(sessionStorage.role)
           })
           .catch(({message}) => {
             this.msg = message
             this.progress = false
           })
       },
-      redirect() {
+      redirect(role) {
         if (this.$store.getters.getAccessToken != '') {
+          console.log(role)
           this.$router.push('/home/spotList')
         } else {
           if (this.$store.getters.getResult == 'noID') alert('사용자가 없습니다.');
