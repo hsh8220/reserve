@@ -9,7 +9,7 @@
         <span id="test"></span>
         <v-divider class="divider"></v-divider>
         <v-subheader>총 {{states.length}}명<v-spacer></v-spacer>인도자 : {{this.$route.params.guide}}</v-subheader>
-        <v-alert v-if="states.length >= 10" :value="true" type="info">더 이상 신청하실 수 없습니다.</v-alert>
+        <v-alert v-if="states.length >= 12" :value="true" type="info">더 이상 신청하실 수 없습니다.</v-alert>
         <v-btn v-else-if="isView" class="reserve_button" block large round color="primary"
                @click="reserve">{{applyButtonString}}
         </v-btn>
