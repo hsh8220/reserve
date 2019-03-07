@@ -27,6 +27,12 @@
               label="시간"
               required
             ></v-text-field>
+            <v-text-field
+              v-model="limitation"
+              :rules="rules"
+              label="제한인원 수"
+              required
+            ></v-text-field>
 
             <v-btn
               :disabled="!valid"
@@ -51,6 +57,7 @@
       name: '',
       guide: '',
       time: '',
+      limitation: '',
       rules: [
         v => !!v || '항목을 입력하세요.'
       ]
@@ -61,7 +68,9 @@
           this.$http.post('/api/exhibition', {
             name: this.name,
             guide: this.guide,
-            time: this.time
+            time: this.time,
+            limitation: this.limitation,
+            congregation: {'id':sessionStorage.congregationId, 'name':sessionStorage.congregationName}
           }).then(data => {
             if (data.data.result == "error") {
               alert("오류가 발생하였습니다.")

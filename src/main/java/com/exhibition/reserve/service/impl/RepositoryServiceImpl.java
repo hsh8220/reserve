@@ -1,8 +1,10 @@
 package com.exhibition.reserve.service.impl;
 
+import com.exhibition.reserve.model.Congregation;
 import com.exhibition.reserve.model.Exhibition;
 import com.exhibition.reserve.model.Member;
 import com.exhibition.reserve.model.ReserveState;
+import com.exhibition.reserve.repository.CongregationRepository;
 import com.exhibition.reserve.repository.ExhibitionRepository;
 import com.exhibition.reserve.repository.ReserveStateRepository;
 import com.exhibition.reserve.repository.MemberRepository;
@@ -21,7 +23,7 @@ import java.util.Optional;
 @Service
 public class RepositoryServiceImpl implements RepositoryService {
 
-    private Logger logger = LoggerFactory.getLogger(JwtServiceImpl.class);
+    private Logger logger = LoggerFactory.getLogger(RepositoryServiceImpl.class);
 
     @Autowired
     MemberRepository memberRepository;
@@ -31,6 +33,14 @@ public class RepositoryServiceImpl implements RepositoryService {
 
     @Autowired
     ExhibitionRepository exhibitionRepository;
+
+    @Autowired
+    CongregationRepository congregationRepository;
+
+    @Override
+    public Optional<Member> getUserByIdByCongregation(String userId, Congregation congregation) {
+        return Optional.ofNullable(memberRepository.findByUserIdAndCongregation(userId, congregation));
+    }
 
     @Override
     public Optional<Member> getUserById(String userId) {
@@ -45,6 +55,11 @@ public class RepositoryServiceImpl implements RepositoryService {
     @Override
     public Optional<List<Member>> getUserAll() {
         return Optional.ofNullable(memberRepository.findAll(new Sort(Sort.Direction.ASC, "name")));
+    }
+
+    @Override
+    public Optional<List<Member>> getUserByCongregation(Congregation congregation) {
+        return Optional.ofNullable(memberRepository.findByCongregation(congregation));
     }
 
     @Override
@@ -90,11 +105,18 @@ public class RepositoryServiceImpl implements RepositoryService {
     }
 
     @Override
-    public void addExhibition(String name, String time, String guide) {
+    public Optional<List<Exhibition>> getExhibitionByCongregation(Congregation congregation) {
+        return Optional.ofNullable(exhibitionRepository.findByCongregation(congregation));
+    }
+
+    @Override
+    public void addExhibition(String name, String time, String guide, Integer limitation, Congregation congregation) {
         Exhibition exhibition  = new Exhibition();
         exhibition.setName(name);
         exhibition.setTime(time);
         exhibition.setGuide(guide);
+        exhibition.setLimitation(limitation);
+        exhibition.setCongregation(congregation);
         exhibitionRepository.save(exhibition);
         logger.info(name + "전시대 추가");
     }
@@ -124,6 +146,38 @@ public class RepositoryServiceImpl implements RepositoryService {
         reserveStateRepository.deleteByExhibition(exhibition);
         exhibitionRepository.delete(exhibition);
         logger.info(exhibition.getName() + "전시대 삭제");
+    }
+
+    @Override
+    public Optional<Congregation> getCongregationById(Integer id) {
+        return congregationRepository.findById(id);
+    }
+
+    @Override
+    public Optional<Congregation> getCongregationByName(String name) {
+        return Optional.ofNullable(congregationRepository.findByName(name));
+    }
+
+    @Override
+    public Optional<List<Congregation>> getCongregationAll() {
+        return Optional.ofNullable(congregationRepository.findAll(new Sort(Sort.Direction.ASC, "id")));
+    }
+
+    @Override
+    public void addCongregation(Congregation congregation) {
+        congregationRepository.save(congregation);
+        logger.info(congregation.getName() + " 회중 추가");
+    }
+
+    @Override
+    public void modifyCongregation(Congregation congregation) {
+        congregationRepository.save(congregation);
+    }
+
+    @Override
+    public void removeCongregation(Congregation congregation) {
+        congregationRepository.delete(congregation);
+        logger.info(congregation.getName() + " 회중 삭제");
     }
 
     @Override
@@ -189,5 +243,13 @@ public class RepositoryServiceImpl implements RepositoryService {
     @Override
     public void removeState(Integer id) {
         reserveStateRepository.deleteById(id);
+    }
+
+    @Override
+    public void dbDeleteAll() {
+        reserveStateRepository.deleteAll();
+        memberRepository.deleteAll();
+        exhibitionRepository.deleteAll();
+        congregationRepository.deleteAll();
     }
 }

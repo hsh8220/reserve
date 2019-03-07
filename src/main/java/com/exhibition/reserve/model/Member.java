@@ -25,6 +25,13 @@ public class Member {
     @Column(nullable = false, length = 50)
     private String name;
 
+    @ManyToOne
+    @JoinColumn(name = "congregation_id")
+    private Congregation congregation;
+
     @Column
     private String role;
+
+    @Column
+    private String fcmToken;
 }

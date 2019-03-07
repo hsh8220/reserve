@@ -4,7 +4,7 @@
       <v-flex xs12
               v-for="spot in spots"
               :key="spot.id"
-              @click="selectSpot(spot.id, spot.guide)">
+              @click="selectSpot(spot.id)">
         <v-card color="grey lighten-2"
         >
           <v-card-text>
@@ -28,7 +28,7 @@
     }),
     created: function () {
       this.progress = true
-      this.$http.get('/api/exhibition')
+      this.$http.get('/api/exhibition/congregation/'+sessionStorage.congregationId)
         .then(data => {
           if (data.data) {
             this.spots = data.data
@@ -41,8 +41,8 @@
         })
     },
     methods: {
-      selectSpot: function (id, guide) {
-        this.$router.push('/home/state/'+id+'/'+guide)
+      selectSpot: function (id) {
+        this.$router.push('/home/state/'+id)
       }
     }
   }

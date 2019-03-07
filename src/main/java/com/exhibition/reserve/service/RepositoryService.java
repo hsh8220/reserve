@@ -1,5 +1,6 @@
 package com.exhibition.reserve.service;
 
+import com.exhibition.reserve.model.Congregation;
 import com.exhibition.reserve.model.Exhibition;
 import com.exhibition.reserve.model.Member;
 import com.exhibition.reserve.model.ReserveState;
@@ -9,9 +10,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface RepositoryService {
+    Optional<Member> getUserByIdByCongregation (String userId, Congregation congregation);
     Optional<Member> getUserById (String userId);
     Optional<List<Member>> getUserByName (String name);
     Optional<List<Member>> getUserAll ();
+    Optional<List<Member>> getUserByCongregation (Congregation congregation);
     void addUser (Member member);
     void modifyUser (Member member);
     void removeUser (String userId);
@@ -20,11 +23,19 @@ public interface RepositoryService {
     Optional<Exhibition> getExhibitionByName (String name);
     Optional<Exhibition> getExhibitionById (Integer id);
     Optional<List<Exhibition>> getExhibitionAll ();
-    void addExhibition (String name, String time, String guide);
+    Optional<List<Exhibition>> getExhibitionByCongregation (Congregation congregation);
+    void addExhibition (String name, String time, String guide, Integer limitation, Congregation congregation);
     void addExhibition (Exhibition exhibition);
     void modifyExhibition (Exhibition exhibition);
     void removeExhibition (String name);
     void removeExhibition (Integer id);
+
+    Optional<Congregation> getCongregationById (Integer id);
+    Optional<Congregation> getCongregationByName (String name);
+    Optional<List<Congregation>> getCongregationAll ();
+    void addCongregation (Congregation congregation);
+    void modifyCongregation (Congregation congregation);
+    void removeCongregation (Congregation congregation);
 
     Optional<List<ReserveState>> getStateByUserId(String userId);
 
@@ -47,4 +58,6 @@ public interface RepositoryService {
     void addState(ReserveState state);
     void modifyState(ReserveState state);
     void removeState(Integer id);
+
+    void dbDeleteAll();
 }

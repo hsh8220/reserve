@@ -38,6 +38,7 @@ public class JwtServiceImpl implements JwtService {
 
         map.put("id", member.getUserId());
         map.put("role", member.getRole());
+        map.put("congregation", member.getCongregation().getId());
 
         JwtBuilder builder = Jwts.builder().setHeader(headerMap)
                 .setClaims(map)
@@ -70,6 +71,7 @@ public class JwtServiceImpl implements JwtService {
                     .parseClaimsJws(jwt).getBody();
             result.put("id", claims.get("id"));
             result.put("role", claims.get("role"));
+            result.put("congregation", claims.get("congregation"));
             return result;
         }else {
             return null;

@@ -32,7 +32,13 @@ export default new Vuex.Store({
           state.result = member.result,
           sessionStorage.accessToken = member.accessToken,
           sessionStorage.userId = member.member.userId,
-          sessionStorage.role = member.member.role
+          sessionStorage.role = member.member.role,
+          sessionStorage.congregationId = member.member.congregation.id,
+          sessionStorage.congregationName = member.member.congregation.name,
+          //로컬스토리지영역, 자동 저장
+          localStorage.userId = member.member.userId,
+          localStorage.congregationId = member.member.congregation.id,
+          localStorage.congregationName = member.member.congregation.name
       },
       LOGOUT(state) {
         state.accessToken = null,

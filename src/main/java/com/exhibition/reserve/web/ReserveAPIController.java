@@ -1,8 +1,10 @@
 package com.exhibition.reserve.web;
 
+import com.exhibition.reserve.model.Congregation;
 import com.exhibition.reserve.model.Exhibition;
 import com.exhibition.reserve.model.Member;
 import com.exhibition.reserve.model.ReserveState;
+import com.exhibition.reserve.service.FcmService;
 import com.exhibition.reserve.service.JwtService;
 import com.exhibition.reserve.service.RepositoryService;
 import org.slf4j.Logger;
@@ -27,13 +29,87 @@ public class ReserveAPIController {
     @Autowired
     private Environment environment;
 
+    @Autowired
+    private FcmService fcmService;
+
     private Logger logger = LoggerFactory.getLogger(ReserveController.class);
 
     @GetMapping(value = "/profile")
-    public String getProfile () {
+    public String getProfile() {
         return Arrays.stream(environment.getActiveProfiles())
                 .findFirst()
                 .orElse("");
+    }
+
+    @RequestMapping(value = "/api/congregation", method = RequestMethod.GET)
+    @ResponseBody
+    public List<Congregation> getAllCongregation(
+    ) {
+        return repositoryService.getCongregationAll().orElse(null);
+    }
+
+    @RequestMapping(value = "/api/congregation", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, String> saveCongregation(
+            @RequestHeader(value = "accessToken") String accessToken,
+            @RequestBody Congregation congregation
+    ) {
+        Map<String, String> result = new HashMap<>();
+
+        try {
+            if (jwtService.checkJwt(accessToken)) {
+                repositoryService.addCongregation(congregation);
+                result.put("result", "success");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put("result", "error");
+        }
+
+        return result;
+    }
+
+    @RequestMapping(value = "/api/congregation", method = RequestMethod.PUT)
+    @ResponseBody
+    public Map<String, String> modifyCongregation(
+            @RequestHeader(value = "accessToken") String accessToken,
+            @RequestBody Congregation congregation
+    ) {
+        Map<String, String> result = new HashMap<>();
+
+        try {
+            if (jwtService.checkJwt(accessToken)) {
+                repositoryService.modifyCongregation(congregation);
+                result.put("result", "success");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put("result", "error");
+        }
+
+        return result;
+    }
+
+    @RequestMapping(value = "/api/congregation/{id}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public Map<String, String> deleteCongregation(
+            @RequestHeader(value = "accessToken") String accessToken,
+            @PathVariable(value = "id") Integer id
+    ) {
+        Map<String, String> result = new HashMap<>();
+
+        try {
+            if (jwtService.checkJwt(accessToken)) {
+                Congregation con = repositoryService.getCongregationById(id).orElse(null);
+                repositoryService.removeCongregation(con);
+                result.put("result", "success");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put("result", "error");
+        }
+
+        return result;
     }
 
     @RequestMapping(value = "/api/user", method = RequestMethod.GET)
@@ -43,6 +119,20 @@ public class ReserveAPIController {
     ) {
         if (jwtService.checkJwt(accessToken)) {
             return repositoryService.getUserAll().orElse(null);
+        } else {
+            return null;
+        }
+    }
+
+    @RequestMapping(value = "/api/user/congregation/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public List<Member> getUserByCongregation(
+            @RequestHeader(value = "accessToken") String accessToken,
+            @PathVariable(value = "id") Integer id
+    ) {
+        if (jwtService.checkJwt(accessToken)) {
+            Congregation con = repositoryService.getCongregationById(id).orElse(null);
+            return repositoryService.getUserByCongregation(con).orElse(null);
         } else {
             return null;
         }
@@ -122,7 +212,7 @@ public class ReserveAPIController {
         result.put("accessToken", "");
 
         try {
-            Member rawMamber = repositoryService.getUserById(member.getUserId()).get();
+            Member rawMamber = repositoryService.getUserByIdByCongregation(member.getUserId(), member.getCongregation()).get();
             logger.info(rawMamber.getUserId() + "님이 로그인하였습니다.");
             String accessToken = jwtService.makeJwt(rawMamber);
             result.put("member", rawMamber);
@@ -137,13 +227,60 @@ public class ReserveAPIController {
         return result;
     }
 
+    @RequestMapping(value = "/api/fcmToken/{token}", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> saveFcmToken(
+            @PathVariable(value = "token") String fcmToken,
+            @RequestBody Member member
+    ) {
+        Map<String, Object> result = new HashMap<>();
+        try {
+            Member rawMamber = repositoryService.getUserByIdByCongregation(member.getUserId(), member.getCongregation()).get();
+            rawMamber.setFcmToken(fcmToken);
+            repositoryService.modifyUser(rawMamber);
+            result.put("result", "success");
+        } catch (NoSuchElementException e) {
+            result.put("result", "noID");
+        } catch (Exception e) {
+            result.put("result", "error");
+        }
+        return result;
+    }
+
     @RequestMapping(value = "/api/exhibition", method = RequestMethod.GET)
     @ResponseBody
-    public List<Exhibition> getExhibitions(
+    public List<Exhibition> getAllExhibitions(
             @RequestHeader(value = "accessToken") String accessToken
     ) {
         if (jwtService.checkJwt(accessToken)) {
             return repositoryService.getExhibitionAll().orElse(null);
+        } else {
+            return null;
+        }
+    }
+
+    @RequestMapping(value = "/api/exhibition/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public Exhibition getExhibitionById(
+            @RequestHeader(value = "accessToken") String accessToken,
+            @PathVariable(value = "id") Integer id
+    ) {
+        if (jwtService.checkJwt(accessToken)) {
+            return repositoryService.getExhibitionById(id).orElse(null);
+        } else {
+            return null;
+        }
+    }
+
+    @RequestMapping(value = "/api/exhibition/congregation/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public List<Exhibition> getExhibitionsByCongregation(
+            @RequestHeader(value = "accessToken") String accessToken,
+            @PathVariable(value = "id") Integer id
+    ) {
+        if (jwtService.checkJwt(accessToken)) {
+            Congregation con = repositoryService.getCongregationById(id).orElse(null);
+            return repositoryService.getExhibitionByCongregation(con).orElse(null);
         } else {
             return null;
         }
@@ -160,6 +297,8 @@ public class ReserveAPIController {
         try {
             if (jwtService.checkJwt(accessToken)) {
                 repositoryService.addExhibition(exhibition);
+                //전시대 생성 알림
+                fcmService.sendToTopic(exhibition.getCongregation(), "전시대 생성 알림", "새로운 전시대 마련이 생성되었습니다.");
                 result.put("result", "success");
             }
         } catch (Exception e) {
@@ -245,10 +384,10 @@ public class ReserveAPIController {
             if (jwtService.checkJwt(accessToken)) {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                 Calendar cal = Calendar.getInstance();
-                cal.setTimeInMillis(dateFormat.parse(month+"-01").getTime());
+                cal.setTimeInMillis(dateFormat.parse(month + "-01").getTime());
                 Timestamp start = new Timestamp(cal.getTimeInMillis());
                 int lastDay = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
-                Timestamp end = new Timestamp(dateFormat.parse(month+"-"+lastDay).getTime());
+                Timestamp end = new Timestamp(dateFormat.parse(month + "-" + lastDay).getTime());
 
                 return repositoryService.getStateByExhibitionId(id, start, end).orElse(null);
             } else {
@@ -273,7 +412,8 @@ public class ReserveAPIController {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                 Timestamp timestamp = new Timestamp((dateFormat.parse(date)).getTime());
                 Map<String, Object> jwtInfo = jwtService.getJwtInfo(accessToken);
-                Member member = repositoryService.getUserById(String.valueOf(jwtInfo.get("id"))).orElse(null);
+                Congregation con = repositoryService.getCongregationById((Integer) jwtInfo.get("congregation")).orElse(null);
+                Member member = repositoryService.getUserByIdByCongregation(String.valueOf(jwtInfo.get("id")), con).orElse(null);
                 Exhibition exhibition = repositoryService.getExhibitionById(id).orElse(null);
 
                 ReserveState reserveState = new ReserveState();

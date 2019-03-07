@@ -1,8 +1,10 @@
 package com.exhibition.reserve.service;
 
+import com.exhibition.reserve.model.Congregation;
 import com.exhibition.reserve.model.Exhibition;
 import com.exhibition.reserve.model.Member;
 import com.exhibition.reserve.model.ReserveState;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,19 +24,57 @@ public class ReserveApplicationTests {
     @Autowired
     RepositoryService repositoryService;
 
+    @After
+    public void cleanup() {
+        repositoryService.dbDeleteAll();
+    }
+
+    @Test
+    public void congregationRepositoryTest() {
+        Congregation con1 = new Congregation();
+        con1.setName("신길동부");
+
+        Congregation con2 = new Congregation();
+        con2.setName("대방");
+
+        repositoryService.addCongregation(con1);
+        repositoryService.addCongregation(con2);
+        assertThat(repositoryService.getCongregationByName("신길동부").map(Congregation::getName).orElse("not"), is("신길동부"));
+        assertThat(repositoryService.getCongregationAll().get().size(), is(2));
+
+        Congregation modiCong = repositoryService.getCongregationByName("대방").get();
+        modiCong.setName("흑석서부");
+        repositoryService.modifyCongregation(modiCong);
+        assertThat(repositoryService.getCongregationByName("흑석서부").map(Congregation::getName).orElse("not"), is("흑석서부"));
+
+        repositoryService.removeCongregation(con1);
+        assertThat(repositoryService.getCongregationAll().get().size(), is(1));
+    }
+
     @Test
     public void userRepositioryTest() {
+
+        Congregation con1 = new Congregation();
+        con1.setName("신길동부");
+
+        Congregation con2 = new Congregation();
+        con2.setName("대방");
+
+        repositoryService.addCongregation(con1);
+        repositoryService.addCongregation(con2);
 
         Member member1 = new Member();
         member1.setUserId("test1");
         member1.setPw("000000");
         member1.setName("test1");
         member1.setRole("ADMIN");
+        member1.setCongregation(con1);
         Member member2 = new Member();
         member2.setUserId("test2");
         member2.setPw("000000");
         member2.setName("test2");
         member2.setRole("BASIC");
+        member2.setCongregation(con2);
 
         repositoryService.addUser(member1);
         repositoryService.addUser(member2);
@@ -45,6 +85,8 @@ public class ReserveApplicationTests {
         repositoryService.modifyUser(modiUser);
         assertThat(repositoryService.getUserById("test2").map(Member::getName).orElse("not"), is("test3"));
 
+        assertThat(repositoryService.getUserByCongregation(con1).get().get(0).getName(), is("test1"));
+
         repositoryService.removeUser("test1");
         assertThat(repositoryService.getUserById("test1").map(Member::getName).orElse("not"), is("not"));
         repositoryService.removeUser("test2");
@@ -53,9 +95,17 @@ public class ReserveApplicationTests {
 
     @Test
     public void exhibitionRepositoryTest() {
+        Congregation con1 = new Congregation();
+        con1.setName("신길동부");
 
-        repositoryService.addExhibition("test1", "오전 9:30~11:30", "한상호");
-        repositoryService.addExhibition("test2", "오전 9:30~11:30", "김서중");
+        Congregation con2 = new Congregation();
+        con2.setName("대방");
+
+        repositoryService.addCongregation(con1);
+        repositoryService.addCongregation(con2);
+
+        repositoryService.addExhibition("test1", "오전 9:30~11:30", "한상호", 10, con1);
+        repositoryService.addExhibition("test2", "오전 9:30~11:30", "김서중", 10, con2);
 
         assertThat(repositoryService.getExhibitionByName("test1").map(Exhibition::getName).orElse("not"), is("test1"));
 
@@ -63,6 +113,8 @@ public class ReserveApplicationTests {
         ex.setName("test3");
         repositoryService.modifyExhibition(ex);
         assertThat(repositoryService.getExhibitionByName("test3").map(Exhibition::getName).orElse("not"), is("test3"));
+
+        assertThat(repositoryService.getExhibitionByCongregation(con1).get().get(0).getName(), is("test3"));
 
         repositoryService.removeExhibition("test3");
         assertThat(repositoryService.getExhibitionByName("test3").map(Exhibition::getName).orElse("not"), is("not"));
@@ -80,24 +132,36 @@ public class ReserveApplicationTests {
         Timestamp t4 = new Timestamp(118, 7, 7, 16, 0, 0, 0);
         Timestamp date = new Timestamp(118, 7, 7, 0, 0, 0, 0);
 
+        Congregation con1 = new Congregation();
+        con1.setName("신길동부");
+
+        Congregation con2 = new Congregation();
+        con2.setName("대방");
+
+        repositoryService.addCongregation(con1);
+        repositoryService.addCongregation(con2);
+
         Member member1 = new Member();
         member1.setUserId("test1");
         member1.setPw("1");
         member1.setName("test1");
+        member1.setCongregation(con1);
         Member member2 = new Member();
         member2.setUserId("test2");
         member2.setPw("1");
         member2.setName("test2");
+        member2.setCongregation(con1);
         Member member3 = new Member();
         member3.setUserId("test3");
         member3.setPw("1");
         member3.setName("test3");
+        member3.setCongregation(con2);
 
         repositoryService.addUser(member1);
         repositoryService.addUser(member2);
         repositoryService.addUser(member3);
-        repositoryService.addExhibition("spot1", "오전9시30분", "한상호");
-        repositoryService.addExhibition("spot2", "오전9시30분", "김서중");
+        repositoryService.addExhibition("spot1", "오전9시30분", "한상호", 10, con1);
+        repositoryService.addExhibition("spot2", "오전9시30분", "김서중", 10, con2);
 
         ReserveState status1 = new ReserveState();
         status1.setStartTime(t1);

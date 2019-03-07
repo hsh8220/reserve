@@ -8,8 +8,11 @@
         </div>
         <span id="test"></span>
         <v-divider class="divider"></v-divider>
-        <v-subheader>총 {{states.length}}명<v-spacer></v-spacer>인도자 : {{this.$route.params.guide}}</v-subheader>
-        <v-alert v-if="states.length >= 12" :value="true" type="info">더 이상 신청하실 수 없습니다.</v-alert>
+        <v-subheader>총 {{states.length}} /<div class="pink--text" style="padding-left: 5px; padding-right: 5px">{{limitation}}</div>명
+          <v-spacer></v-spacer>
+          인도자 : {{exhibition.guide}}
+        </v-subheader>
+        <v-alert v-if="states.length >= limitation" :value="true" type="info">더 이상 신청하실 수 없습니다.</v-alert>
         <v-btn v-else-if="isView" class="reserve_button" block large round color="primary"
                @click="reserve">{{applyButtonString}}
         </v-btn>
@@ -48,26 +51,31 @@
     data() {
       return {
         states: [],
+        exhibition: {},
+        limitation: 0,
         date: this.$moment(new Date()).format('YYYY-MM-DD'),
-        pickerDate: null,
+        pickerDate: '',
         arrayEvents: [],
         userId: sessionStorage.userId,
         isBefore: false,
         isReserved: false,
-        isGuide: this.$route.params.guide == sessionStorage.userId,
         progress: false,
         applyButtonString: '신청 하기'
       }
     },
     computed: {
+      //인도자 여부 혹은 조건에 따라 신청 버튼 컨트롤
       isView: function () {
         let result = false;
-        if(this.isGuide) {
-          this.applyButtonString = '봉사 만들기'
-          if(!this.isBefore && !this.isReserved) result = true;
-        }
-        else {
-          if(!this.isBefore && !this.isReserved && this.states.length > 0) result = true;
+        if (sessionStorage.role != 'BASIC') {
+          if(this.states.length > 0 ) {
+            this.applyButtonString = '신청 하기'
+          }else {
+            this.applyButtonString = '봉사 만들기'
+          }
+          if (!this.isBefore && !this.isReserved) result = true;
+        } else {
+          if (!this.isBefore && !this.isReserved && this.states.length > 0) result = true;
         }
         return result
       }
@@ -76,21 +84,30 @@
       this.progress = true
       let today = this.$moment(new Date()).format('YYYY-MM-DD')
       let month = this.$moment(new Date()).format('YYYY-MM')
-      this.$http.get('/api/state/' + this.$route.params.id + '/' + today)
+      this.$http.get('/api/exhibition/' + this.$route.params.id)
         .then(data => {
           if (data.data) {
-            this.states = data.data
-            this.isReserved = this.checkReserved()
-            this.progress = false
+            this.exhibition = data.data
+            this.limitation = this.exhibition.limitation
           } else {
             this.progress = false
             alert("사용 기간이 만료되었습니다. 다시 로그인해 주세요.")
             this.$router.push('/login')
           }
         })
+        .then(data => {
+          this.$http.get('/api/state/' + this.$route.params.id + '/' + today)
+            .then(data => {
+              if (data.data) {
+                this.states = data.data
+                this.isReserved = this.checkReserved()
+                this.progress = false
+              }
+            })
+        })
     },
     watch: {
-      pickerDate (val) {
+      pickerDate(val) {
         this.viewCalendarState(val)
       }
     },
@@ -144,7 +161,7 @@
         })
         return result
       },
-      viewCalendarState:function (val) {
+      viewCalendarState: function (val) {
         this.$http.get('/api/state/month/' + this.$route.params.id + '/' + val) //달력에 신청자있는 날에 표시
           .then(data => {
             this.arrayEvents = data.data.map(state => this.$moment(state.startTime).format('YYYY-MM-DD'));

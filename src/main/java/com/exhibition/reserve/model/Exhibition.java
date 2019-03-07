@@ -23,4 +23,10 @@ public class Exhibition {
     @Column
     private String guide;
 
+    @Column
+    private Integer limitation;
+
+    @ManyToOne
+    @JoinColumn(name = "congregation_id")
+    private Congregation congregation;
 }

@@ -17,7 +17,7 @@
             <v-select
               v-model="select"
               :items="items"
-              :rules="[v => !!v || 'Item is required']"
+              :rules="[v => !!v || '권한을 선택하세요.']"
               label="사용자 권한"
               required
             ></v-select>
@@ -58,7 +58,8 @@
           this.$http.post('/api/user', {
             userId: this.name,
             name: this.name,
-            role: this.select
+            role: this.select,
+            congregation: {'id':sessionStorage.congregationId, 'name':sessionStorage.congregationName}
           }).then(data => {
             if (data.data.result == "error") {
               alert("사용자 이름이 중복 됩니다.")
