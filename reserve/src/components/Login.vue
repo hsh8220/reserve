@@ -9,7 +9,7 @@
               <v-toolbar color="transparent" card>
                 <v-toolbar-title><h2>전시대 신청</h2></v-toolbar-title>
                 <v-spacer></v-spacer>
-                v.2.0.0
+                v.2.0.1
               </v-toolbar>
               <v-card-text>
                 <v-form>
@@ -88,17 +88,17 @@
         }
       },
       sendFcmTokenToServer(member) {
-        let that = this
-        this.$messaging.getToken().then(function (refreshedToken) {
-          console.log('Token refreshed.');
-          that.$http.post('/api/fcmToken/'+refreshedToken, member)
-            .then(data => {
-              console.log('Token refreshed.');
-            })
-            .catch(function (err) {
-              console.log('Token error.');
-            })
-        })
+        // let that = this
+        // this.$messaging.getToken().then(function (refreshedToken) {
+        //   console.log('Token refreshed.');
+        //   that.$http.post('/api/fcmToken/'+refreshedToken, member)
+        //     .then(data => {
+        //       console.log('Token refreshed.');
+        //     })
+        //     .catch(function (err) {
+        //       console.log('Token error.');
+        //     })
+        // })
       }
     }
   }
