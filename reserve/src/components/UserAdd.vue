@@ -15,13 +15,19 @@
               required
             ></v-text-field>
             <v-select
-              v-model="select"
-              :items="items"
+              v-model="gender"
+              :items="genders"
+              :rules="[v => !!v || '성별을 선택하세요.']"
+              label="성별"
+              required
+            ></v-select>
+            <v-select
+              v-model="role"
+              :items="roles"
               :rules="[v => !!v || '권한을 선택하세요.']"
               label="사용자 권한"
               required
             ></v-select>
-
             <v-btn
               :disabled="!valid"
               @click="submit"
@@ -46,10 +52,15 @@
       nameRules: [
         v => !!v || '이름을 입력하세요.'
       ],
-      select: null,
-      items: [
+      role: null,
+      gender: null,
+      roles: [
         'BASIC',
         'MANAGER',
+      ],
+      genders: [
+        '남자',
+        '여자',
       ],
     }),
     methods: {
@@ -58,7 +69,8 @@
           this.$http.post('/api/user', {
             userId: this.name,
             name: this.name,
-            role: this.select,
+            role: this.role,
+            gender: this.gender,
             congregation: {'id':sessionStorage.congregationId, 'name':sessionStorage.congregationName}
           }).then(data => {
             if (data.data.result == "error") {

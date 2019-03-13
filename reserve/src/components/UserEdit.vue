@@ -44,8 +44,15 @@
                   required
                 ></v-text-field>
                 <v-select
-                  v-model="select"
-                  :items="items"
+                  v-model="gender"
+                  :items="genders"
+                  :rules="[v => !!v || '성별을 선택하세요.']"
+                  label="성별"
+                  required
+                ></v-select>
+                <v-select
+                  v-model="role"
+                  :items="roles"
                   :rules="[v => !!v || '권한을 선택하세요.']"
                   label="사용자 권한"
                   required
@@ -85,10 +92,15 @@
       pw: '',
       name: '',
       fcmToken: '',
-      select: null,
-      items: [
+      role: null,
+      gender: null,
+      roles: [
         'BASIC',
         'MANAGER',
+      ],
+      genders: [
+        '남자',
+        '여자'
       ],
     }),
     created: function () {
@@ -112,7 +124,8 @@
         this.id = user.id
         this.pw = user.pw
         this.name = user.name
-        this.select = user.role
+        this.role = user.role
+        this.gender = user.gender
         this.fcmToken = user.fcmToken
         this.set_dialog = true
       },
@@ -123,7 +136,8 @@
             userId: this.name,
             pw: this.pw,
             name: this.name,
-            role: this.select,
+            role: this.role,
+            gender: this.gender,
             congregation: {'id':sessionStorage.congregationId, 'name':sessionStorage.congregationName},
             fcmToken: this.fcmToken
           }).then(data => {

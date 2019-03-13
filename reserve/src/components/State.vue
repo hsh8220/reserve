@@ -23,7 +23,8 @@
               :key="state.id"
             >
               <v-list-tile-action>
-                <v-icon color="pink">person</v-icon>
+                <v-icon v-if="state.member.gender == '여자'" color="pink">person</v-icon>
+                <v-icon v-else color="primary">person</v-icon>
               </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title v-text="state.member.name"></v-list-tile-title>

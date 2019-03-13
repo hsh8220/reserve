@@ -33,5 +33,8 @@ public class Member {
     private String role;
 
     @Column
+    private String gender;
+
+    @Column
     private String fcmToken;
 }
