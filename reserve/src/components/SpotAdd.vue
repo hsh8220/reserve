@@ -31,9 +31,16 @@
               v-model="limitation"
               :rules="rules"
               label="제한인원 수"
+              type="number"
               required
             ></v-text-field>
-
+            <v-text-field
+              v-model="timeLimit"
+              :rules="rules"
+              label="시간 제한"
+              type="number"
+              required
+            ></v-text-field>
             <v-btn
               :disabled="!valid"
               @click="submit"
@@ -58,6 +65,7 @@
       guide: '',
       time: '',
       limitation: '',
+      timeLimit: '',
       rules: [
         v => !!v || '항목을 입력하세요.'
       ]
@@ -70,6 +78,7 @@
             guide: this.guide,
             time: this.time,
             limitation: this.limitation,
+            timeLimit: this.timeLimit,
             congregation: {'id':sessionStorage.congregationId, 'name':sessionStorage.congregationName}
           }).then(data => {
             if (data.data.result == "error") {

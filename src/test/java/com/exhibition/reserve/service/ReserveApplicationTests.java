@@ -104,8 +104,8 @@ public class ReserveApplicationTests {
         repositoryService.addCongregation(con1);
         repositoryService.addCongregation(con2);
 
-        repositoryService.addExhibition("test1", "오전 9:30~11:30", "한상호", 10, con1);
-        repositoryService.addExhibition("test2", "오전 9:30~11:30", "김서중", 10, con2);
+        repositoryService.addExhibition("test1", "오전 9:30~11:30", "한상호", 10, 14, con1);
+        repositoryService.addExhibition("test2", "오전 9:30~11:30", "김서중", 10, 14, con2);
 
         assertThat(repositoryService.getExhibitionByName("test1").map(Exhibition::getName).orElse("not"), is("test1"));
 
@@ -160,8 +160,8 @@ public class ReserveApplicationTests {
         repositoryService.addUser(member1);
         repositoryService.addUser(member2);
         repositoryService.addUser(member3);
-        repositoryService.addExhibition("spot1", "오전9시30분", "한상호", 10, con1);
-        repositoryService.addExhibition("spot2", "오전9시30분", "김서중", 10, con2);
+        repositoryService.addExhibition("spot1", "오전9시30분", "한상호", 10, 14, con1);
+        repositoryService.addExhibition("spot2", "오전9시30분", "김서중", 10, 14, con2);
 
         ReserveState status1 = new ReserveState();
         status1.setStartTime(t1);

@@ -4,4 +4,4 @@ insert into member (name, pw, role, user_id, congregation_id, gender) values ('�
 insert into member (name, pw, role, user_id, congregation_id, gender) values ('오민경', '000000', 'BASIC', '오민경', 1, '여자');
 insert into member (name, pw, role, user_id, congregation_id, gender) values ('이대현', '000000', 'MANAGER', '이대현', 1, '남자');
 insert into member (name, pw, role, user_id, congregation_id, gender)values ('백신애', '000000', 'BASIC', '백신애', 1, '여자');
-insert into exhibition (guide, name, time, limitation, congregation_id) values ('한상호', '공군회관', '일요일 오전', 10, 1);
+insert into exhibition (guide, name, time, limitation, time_limit, congregation_id) values ('한상호', '공군회관', '일요일 오전', 10, 14, 1);

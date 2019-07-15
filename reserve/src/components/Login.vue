@@ -9,7 +9,7 @@
               <v-toolbar color="transparent" card>
                 <v-toolbar-title><h2>전시대 신청</h2></v-toolbar-title>
                 <v-spacer></v-spacer>
-                v.2.1.0
+                v.2.2.0
               </v-toolbar>
               <v-card-text>
                 <v-form>

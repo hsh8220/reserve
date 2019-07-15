@@ -12,6 +12,12 @@
           <v-spacer></v-spacer>
           인도자 : {{exhibition.guide}}
         </v-subheader>
+        <v-subheader v-if="timeRemain > 0 && timeRemain < 24 && isEventDay">
+          신청가능한 시간이<span class="pink--text">{{timeRemain}}</span> 시간 남았습니다.
+        </v-subheader>
+        <v-subheader class="pink--text" v-else-if="timeRemain <= 0 && isEventDay">
+          신청가능한 시간이 끝났습니다.
+        </v-subheader>
         <v-alert v-if="states.length >= limitation" :value="true" type="info">더 이상 신청하실 수 없습니다.</v-alert>
         <v-btn v-else-if="isView" class="reserve_button" block large round color="primary"
                @click="reserve">{{applyButtonString}}
@@ -61,7 +67,8 @@
         isBefore: false,
         isReserved: false,
         progress: false,
-        applyButtonString: '신청 하기'
+        applyButtonString: '신청 하기',
+        timeRemain: 0
       }
     },
     computed: {
@@ -79,6 +86,12 @@
           if (!this.isBefore && !this.isReserved && this.states.length > 0) result = true;
         }
         return result
+      },
+      isEventDay: function () {
+        let rst = false;
+        if(this.arrayEvents.filter(day => day == this.date).length > 0) rst = true;
+        else rst = false;
+        return rst;
       }
     },
     created: function () {
@@ -90,6 +103,10 @@
           if (data.data) {
             this.exhibition = data.data
             this.limitation = this.exhibition.limitation
+            this.isBefore = this.$moment().startOf('d').add(this.exhibition.timeLimit, 'h').isBefore(new Date())
+            let t2 = this.$moment().startOf('d').add(this.exhibition.timeLimit, 'h')
+            let t1 = this.$moment()
+            this.timeRemain = Math.ceil(this.$moment.duration(t2.diff(t1)).asHours())
           } else {
             this.progress = false
             alert("사용 기간이 만료되었습니다. 다시 로그인해 주세요.")
@@ -116,7 +133,10 @@
       selectedDate: function (date) {
         if (!this.progress) { //중복 클릭 방지 코드
           this.progress = true
-          this.isBefore = this.$moment(date).isBefore(this.$moment(new Date()).format('YYYY-MM-DD'))
+          this.isBefore = this.$moment(date).add(this.exhibition.timeLimit, 'h').isBefore(new Date())
+          let t2 = this.$moment(date).add(this.exhibition.timeLimit, 'h')
+          let t1 = this.$moment()
+          this.timeRemain = Math.ceil(this.$moment.duration(t2.diff(t1)).asHours())
 
           this.$http.get('/api/state/' + this.$route.params.id + '/' + date)
             .then(data => {
@@ -180,5 +200,9 @@
 
   .reserve_button {
     margin-bottom: 20px;
+  }
+
+  .v-subheader {
+    height: 30px;
   }
 </style>

@@ -26,6 +26,9 @@ public class Exhibition {
     @Column
     private Integer limitation;
 
+    @Column
+    private Integer timeLimit;
+
     @ManyToOne
     @JoinColumn(name = "congregation_id")
     private Congregation congregation;

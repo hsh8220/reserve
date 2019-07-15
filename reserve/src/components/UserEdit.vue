@@ -10,7 +10,6 @@
         <v-list dense>
           <v-list-tile
             v-for="user in users"
-            v-if="user.role != 'ADMIN'"
             :key="user.id"
             @click=""
           >
@@ -111,7 +110,7 @@
         this.$http.get('/api/user/congregation/' + sessionStorage.congregationId)
           .then(data => {
             if (data.data) {
-              this.users = data.data
+              this.users = data.data.filter(x => x.role != 'ADMIN')
               this.progress = false
             } else {
               this.progress = false

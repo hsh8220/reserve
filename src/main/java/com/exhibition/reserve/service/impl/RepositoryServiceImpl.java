@@ -110,12 +110,13 @@ public class RepositoryServiceImpl implements RepositoryService {
     }
 
     @Override
-    public void addExhibition(String name, String time, String guide, Integer limitation, Congregation congregation) {
+    public void addExhibition(String name, String time, String guide, Integer limitation, Integer timeLimit, Congregation congregation) {
         Exhibition exhibition  = new Exhibition();
         exhibition.setName(name);
         exhibition.setTime(time);
         exhibition.setGuide(guide);
         exhibition.setLimitation(limitation);
+        exhibition.setTimeLimit(timeLimit);
         exhibition.setCongregation(congregation);
         exhibitionRepository.save(exhibition);
         logger.info(name + "전시대 추가");
