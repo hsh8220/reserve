@@ -30,7 +30,7 @@ deploy:
 - provider: s3
   access_key_id: $AWS_ACCESS_KEY
   secret_access_key: $AWS_SECRET_KEY
-  bucket: springboot-reserve-deploy
+  bucket: reserve2020-deploy
   region: ap-northeast-2
   skip_cleanup: true
   acl: public_read
@@ -43,11 +43,11 @@ deploy:
 - provider: codedeploy
   access_key_id: $AWS_ACCESS_KEY
   secret_access_key: $AWS_SECRET_KEY
-  bucket: springboot-reserve-deploy
+  bucket: reserve2020-deploy
   key: springboot-reserve.zip
   bundle_type: zip
-  application: springboot-reserve
-  deployment_group: springboot-reserve-group
+  application: reserve
+  deployment_group: reserve-group
   region: ap-northeast-2
   wait-until-deployed: true
   on:
