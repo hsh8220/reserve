@@ -4,7 +4,6 @@ import com.exhibition.reserve.model.Congregation;
 import com.exhibition.reserve.model.Exhibition;
 import com.exhibition.reserve.model.Member;
 import com.exhibition.reserve.model.ReserveState;
-import com.exhibition.reserve.service.FcmService;
 import com.exhibition.reserve.service.JwtService;
 import com.exhibition.reserve.service.RepositoryService;
 import org.slf4j.Logger;
@@ -28,9 +27,6 @@ public class ReserveAPIController {
 
     @Autowired
     private Environment environment;
-
-    @Autowired
-    private FcmService fcmService;
 
     private Logger logger = LoggerFactory.getLogger(ReserveController.class);
 
@@ -297,8 +293,6 @@ public class ReserveAPIController {
         try {
             if (jwtService.checkJwt(accessToken)) {
                 repositoryService.addExhibition(exhibition);
-                //전시대 생성 알림
-                fcmService.sendToTopic(exhibition.getCongregation(), "전시대 생성 알림", "새로운 전시대 마련이 생성되었습니다.");
                 result.put("result", "success");
             }
         } catch (Exception e) {

@@ -1,5 +1,4 @@
 import Vue from 'vue'
-import store from '@/store'
 import Router from 'vue-router'
 import Login from '@/components/Login'
 import Join from '@/components/Join'
