@@ -19,7 +19,7 @@
     "es6-promise": "^4.2.5",
     "event-source-polyfill": "^1.0.4",
     "material-design-icons-iconfont": "^4.0.2",
-    "moment": "^2.22.2",
+    "moment": "^2.29.4",
     "vue": "^2.6.10",
     "vue-momentjs": "^0.1.2",
     "vue-router": "^3.0.7",
